@@ -1,5 +1,5 @@
 ```
-research-and-development/
+susi/
 ├── docs/
 │   ├── slides/
 │   ├── notes/
