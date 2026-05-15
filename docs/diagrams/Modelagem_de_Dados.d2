@@ -1,0 +1,58 @@
+direction: right
+
+# entidades
+Paciente: {
+  shape: sql_table
+  id_paciente: uuid {constraint: primary_key}
+  data_nascimento: date
+  sexo: varchar(1)
+  cep: varchar(8)
+  latitude: decimal
+  longitude: decimal
+  bairro: varchar(100)
+  municipio: varchar(100)
+  uf: varchar(2)
+}
+
+Unidade_Saude: {
+  shape: sql_table
+  cnes: varchar(7) {constraint: primary_key}
+  nome_fantasia: varchar(150)
+  tipo_unidade: varchar(50)
+  cep: varchar(8)
+  latitude: decimal
+  longitude: decimal
+  bairro: varchar(100)
+  municipio: varchar(100)
+  uf: varchar(2)
+}
+
+Profissional: {
+  shape: sql_table
+  cns: varchar(15) {constraint: primary_key}
+  nome: varchar(150)
+  cbo: varchar(6)
+  especialidade: varchar(100)
+}
+
+Agendamento: {
+  shape: sql_table
+  id_agendamento: uuid {constraint: primary_key}
+  id_paciente: uuid {constraint: foreign_key}
+  cnes_solicitante: varchar(7) {constraint: foreign_key}
+  cnes_executante: varchar(7) {constraint: foreign_key}
+  cns_profissional: varchar(15) {constraint: foreign_key}
+  data_solicitacao: timestamp
+  data_agendamento: timestamp
+  data_atendimento: timestamp
+  procedimento_sus: varchar(10)
+  status_agendamento: varchar(20)
+  tempo_espera_dias: int
+  distancia_km: decimal
+}
+
+# relacionamentos
+Paciente.id_paciente -> Agendamento.id_paciente: Faz
+Unidade_Saude.cnes -> Agendamento.cnes_solicitante: Solicita
+Unidade_Saude.cnes -> Agendamento.cnes_executante: Executa
+Profissional.cns -> Agendamento.cns_profissional: Realiza
